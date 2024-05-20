@@ -41,6 +41,11 @@ from .models import Transformer, Pooling, Normalize
 from .model_card_templates import ModelCardTemplate
 from . import __version__
 
+logging.basicConfig(level=logging.INFO,
+                    format='%(asctime)s - %(levelname)s - %(message)s',
+                    filename='logs/sbert.log',
+                    filemode='a')
+
 logger = logging.getLogger(__name__)
 
 
