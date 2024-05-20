@@ -500,12 +500,15 @@ class SentenceTransformer(nn.Sequential):
         logger.info("Start multi-process pool on devices: {}".format(", ".join(map(str, target_devices))))
 
         self.to("cpu")
+        logger.info(1)
         self.share_memory()
+        logger.info(2)
         ctx = mp.get_context("spawn")
+        logger.info(3)
         input_queue = ctx.Queue()
         output_queue = ctx.Queue()
         processes = []
-
+        logger.info(4)
         for device_id in target_devices:
             p = ctx.Process(
                 target=SentenceTransformer._encode_multi_process_worker,
@@ -514,7 +517,7 @@ class SentenceTransformer(nn.Sequential):
             )
             p.start()
             processes.append(p)
-
+        logger.info(5)
         return {"input": input_queue, "output": output_queue, "processes": processes}
 
     @staticmethod
