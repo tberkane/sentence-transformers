@@ -563,22 +563,23 @@ class SentenceTransformer(nn.Sequential):
             chunk_size = min(math.ceil(len(sentences) / len(pool["processes"]) / 10), 5000)
 
         logger.debug(f"Chunk data into {math.ceil(len(sentences) / chunk_size)} packages of size {chunk_size}")
+        print(f"Chunk data into {math.ceil(len(sentences) / chunk_size)} packages of size {chunk_size}")
 
         input_queue = pool["input"]
         last_chunk_id = 0
         chunk = []
-
+        print(11)
         for sentence in sentences:
             chunk.append(sentence)
             if len(chunk) >= chunk_size:
                 input_queue.put([last_chunk_id, batch_size, chunk, prompt_name, prompt, normalize_embeddings])
                 last_chunk_id += 1
                 chunk = []
-
+        print(12)
         if len(chunk) > 0:
             input_queue.put([last_chunk_id, batch_size, chunk, prompt_name, prompt, normalize_embeddings])
             last_chunk_id += 1
-
+        print(13)
         output_queue = pool["output"]
         results_list = sorted([output_queue.get() for _ in range(last_chunk_id)], key=lambda x: x[0])
         embeddings = np.concatenate([result[1] for result in results_list])
