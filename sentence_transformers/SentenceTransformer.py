@@ -589,8 +589,11 @@ class SentenceTransformer(nn.Sequential):
             last_chunk_id += 1
         print(13)
         output_queue = pool["output"]
+        print(14)
         results_list = sorted([output_queue.get() for _ in range(last_chunk_id)], key=lambda x: x[0])
+        print(15)
         embeddings = np.concatenate([result[1] for result in results_list])
+        print(16)
         return embeddings
 
     @staticmethod
